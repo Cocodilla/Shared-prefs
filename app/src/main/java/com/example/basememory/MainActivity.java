@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements View .OnClickListener{
+public class MainActivity extends AppCompatActivity{
 
     EditText et;
     Button btnSafe, btnLoad;
@@ -25,25 +28,34 @@ public class MainActivity extends AppCompatActivity implements View .OnClickList
         btnSafe = (Button) findViewById(R.id.btnSafe);
         btnLoad = (Button) findViewById(R.id.btnLoad);
 
-btnSafe.setOnClickListener(this);
-btnLoad.setOnClickListener(this);
+//btnSafe.setOnClickListener(this);
+//btnLoad.setOnClickListener(this);
+loadText();
 
-
-    }
-
+et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
     @Override
-    public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.btnSafe:
-                saveText();
-                break;
-            case R.id.btnLoad:
-                loadText();
-                break;
-            default:
-                break;
-        }
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent Event) {
+        saveText();
+        Log.d(SAVED_TEXT,et.getText().toString());
+        return true;
     }
+});
+
+    }
+
+//    @Override
+//    public void onClick(View view) {
+//        switch(view.getId()){
+//            case R.id.btnSafe:
+//                saveText();
+//                break;
+//            case R.id.btnLoad:
+//                loadText();
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
     private void loadText() {
 
@@ -62,5 +74,11 @@ btnLoad.setOnClickListener(this);
         Toast.makeText(this, "The text was saved", Toast.LENGTH_LONG).show();
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        saveText();
     }
 }
